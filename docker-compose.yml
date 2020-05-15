@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  integration-tests:
+    container_name: integration-tests
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - API_LOGIN=${API_LOGIN:-admin}
+      - API_PASSWORD=${API_PASSWORD:-password}
+      - ENV_ID=${ENV_ID}                        # env id
+    volumes:
+      - "./build/allure-results:/app/build/allure-results"
