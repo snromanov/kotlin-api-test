@@ -6,14 +6,22 @@ import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.result.Result
 import org.slf4j.LoggerFactory
 
+val log = LoggerFactory.getLogger("HttpLogger")
+
 /**
- * Simplify function add logs
+ * Simplify function add logs for  if request fail
+ *
  */
-inline fun <reified T : Any> Triple<Request, Response, Result<T, FuelError>>.toLog(): Triple<Request, Response,
-        Result<T, FuelError>> {
-    val log = LoggerFactory.getLogger("HttpLogger")
-    log.info("{}", first.toString())
-    log.info("{}", second.toString())
-    log.info("{}", third.toString())
-    return this
+inline fun <reified T : Any> Triple<Request, Response, Result<T, FuelError>>
+        .toLogIfNot(status: Int) = also {
+    when {
+        second.statusCode != status -> {
+            log.info("{}", first.toString())
+            log.info("{}", second.toString())
+            throw IllegalArgumentException(
+                "The server should have returned code = $status, " +
+                        "but returned the code = ${second.statusCode}"
+            )
+        }
+    }
 }

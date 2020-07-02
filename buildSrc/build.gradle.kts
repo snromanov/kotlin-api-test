@@ -16,8 +16,8 @@ val kotlinVersion: String by extra
 val detektVersion: String by extra
 
 dependencies {
-    compile(kotlin("stdlib-jdk8", version = kotlinVersion))
-    compile(kotlin("gradle-plugin", version = kotlinVersion))
-    compile(kotlin("reflect", version = kotlinVersion))
-    compile("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektVersion")
+    implementation(kotlin("stdlib-jdk8", version = kotlinVersion))
+    implementation(kotlin("gradle-plugin", version = kotlinVersion))
+    implementation(kotlin("reflect", version = kotlinVersion))
+    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektVersion")
 }

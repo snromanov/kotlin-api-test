@@ -1,5 +1,4 @@
 import io.gitlab.arturbosch.detekt.Detekt
-import io.gitlab.arturbosch.detekt.detekt
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -11,6 +10,7 @@ plugins {
 }
 
 repositories {
+    google()
     mavenCentral()
     jcenter()
 }
@@ -18,10 +18,7 @@ repositories {
 apply {
     from("${rootProject.rootDir}/properties.gradle.kts")
 }
-
-val ktlint: Configuration = configurations.create("ktlint")
 val kotlinVersion: String by extra
-val ktlintVersion: String by extra
 val fuelVersion: String by extra
 val jacksonVersion: String by extra
 val junitVersion: String by extra
@@ -32,17 +29,23 @@ val hamcrestVersion: String by extra
 val detektVersion: String by extra
 val apacheVersion: String by extra
 val cfg4jVersion: String by extra
+val konfigVersion: String by extra
+val aspectjVersion: String by extra
+val awaitVersion: String by extra
+val kotestVersion: String by extra
 
 dependencies {
-    ktlint("com.github.shyiko:ktlint:$ktlintVersion")
     api(kotlin("stdlib-jdk8", kotlinVersion))
     api(kotlin("stdlib", kotlinVersion))
     api(kotlin("reflect", kotlinVersion))
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
     api("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("com.github.kittinunf.fuel:fuel:$fuelVersion")
     implementation("com.github.kittinunf.fuel:fuel-jackson:$fuelVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("org.cfg4j:cfg4j-core:$cfg4jVersion")
+    implementation("com.natpryce:konfig:$konfigVersion")
+    implementation("org.aspectj:aspectjweaver:$aspectjVersion")
     testImplementation("io.qameta.allure:allure-junit5:$allureVersion")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
@@ -50,6 +53,8 @@ dependencies {
     testImplementation("com.natpryce:hamkrest:$hamcrestVersion")
     testImplementation("io.qameta.allure:allure-attachments:$allureVersion")
     testImplementation("io.qameta.allure:allure-generator:$allureVersion")
+    implementation("org.awaitility:awaitility:$awaitVersion")
+    implementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
 }
 
 tasks {
@@ -68,30 +73,9 @@ tasks {
         this.jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
-    val ktlint by creating(JavaExec::class) {
-        group = "verification"
-        description = "Check Kotlin code style."
-        classpath = configurations["ktlint"]
-        main = "com.github.shyiko.ktlint.Main"
-        args = listOf("src/**/*.kt")
-    }
-
-    "check" {
-        dependsOn(ktlint)
-    }
-
-    create("ktlintFormat", JavaExec::class) {
-        group = "formatting"
-        description = "Fix Kotlin code style deviations."
-        classpath = configurations["ktlint"]
-        main = "com.github.shyiko.ktlint.Main"
-        args = listOf("-F", "src/**/*.kt")
-    }
-
     withType<Test> {
         useJUnitPlatform()
         systemProperty("allure.results.directory", "$projectDir/build/allure-results")
-        ignoreFailures = true
         testLogging {
             events = setOf(
                 TestLogEvent.FAILED,
@@ -108,6 +92,7 @@ tasks {
 }
 
 detekt {
+    autoCorrect = true
     toolVersion = detektVersion
     input = files("src/main/kotlin", "src/test/kotlin")
 }
