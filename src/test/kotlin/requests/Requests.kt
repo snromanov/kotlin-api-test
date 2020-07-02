@@ -1,28 +1,30 @@
 package requests
 
-import assistants.POSTMAN_URL
+import assistants.PETSTORE_URL
+import assistants.bodyOrder
+import assistants.json
 import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.core.extensions.jsonBody
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
 import helper.allure.toAllure
 import helper.logger.toLogIfNot
-import java.net.HttpURLConnection
+import model.pets.Order
+import java.net.HttpURLConnection.HTTP_OK
 
 /**
  * Get request
  *
- * @param status
- * @param path
+ * @param url
  * @return response
  */
-fun getRequest(status: Int, path: String): Response {
+fun getRequest(url: String): Response {
     val (_, response) =
-        "$POSTMAN_URL/$path"
+        url
             .httpGet()
             .responseString()
             .toAllure()
-            .toLogIfNot(status)
+            .toLogIfNot(HTTP_OK)
 
     return response
 }
@@ -41,7 +43,22 @@ fun postRequest(url: String, data: String): Response {
             .jsonBody(data)
             .responseString()
             .toAllure()
-            .toLogIfNot(HttpURLConnection.HTTP_OK)
+            .toLogIfNot(HTTP_OK)
 
     return response
 }
+
+/**
+ * Get order id
+ *
+ */
+fun getOrderId() =
+    "$PETSTORE_URL/v2/store/order"
+        .httpPost()
+        .jsonBody(bodyOrder)
+        .responseString()
+        .toAllure()
+        .toLogIfNot(HTTP_OK)
+        .second
+        .json<Order>()
+        .id
