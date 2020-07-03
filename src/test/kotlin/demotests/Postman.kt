@@ -4,8 +4,6 @@ import assistants.POSTMAN_URL
 import assistants.json
 import com.github.kittinunf.fuel.httpGet
 import com.natpryce.hamkrest.isEmpty
-import helper.allure.toAllure
-import helper.logger.toLogIfNot
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import model.postman.Cookies
@@ -26,9 +24,7 @@ class Postman {
             url
                 .httpGet()
                 .responseString()
-        response.json<Cookies>().apply {
-            cookies shouldNotBe isEmpty
-        }
+        response.json<Cookies>().apply { cookies shouldNotBe isEmpty }
     }
 
     /**
