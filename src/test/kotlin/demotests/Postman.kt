@@ -2,7 +2,10 @@ package demotests
 
 import assistants.POSTMAN_URL
 import assistants.json
+import com.github.kittinunf.fuel.httpGet
 import com.natpryce.hamkrest.isEmpty
+import helper.allure.toAllure
+import helper.logger.toLogIfNot
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import model.postman.Cookies
@@ -18,8 +21,11 @@ class Postman {
      */
     @Test
     fun `get request path cookies`() {
-        val url = "$POSTMAN_URL/cookies"
-        val response = getRequest(url, HTTP_OK)
+        val url = "url/cookies"
+        val (_, response) =
+            url
+                .httpGet()
+                .responseString()
         response.json<Cookies>().apply {
             cookies shouldNotBe isEmpty
         }
