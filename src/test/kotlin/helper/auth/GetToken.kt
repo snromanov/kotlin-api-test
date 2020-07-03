@@ -9,15 +9,14 @@ import helper.library.TestConfig.baseDomain
 class GetToken(private val apiConfig: EnvConfig) {
 
     /**
-     * Function to receive tokens:
+     * Function to receive token:
      * - access token
-     * - refresh token
      */
     fun token(): Token {
         val urlAuth = "$baseDomain/auth/login"
         return urlAuth
             .httpPost()
-            .objectBody(Auth(apiConfig.login, apiConfig.password))/**/
+            .objectBody(Auth(apiConfig.login, apiConfig.password))
             .responseObject<Token>()
             .third.get()
     }

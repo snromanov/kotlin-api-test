@@ -16,8 +16,10 @@ inline fun <reified T : Any> Triple<Request, Response, Result<T, FuelError>>
         .toLogIfNot(status: Int) = also {
     when {
         second.statusCode != status -> {
+
             log.info("{}", first.toString())
             log.info("{}", second.toString())
+
             throw IllegalArgumentException(
                 "The server should have returned code = $status, " +
                         "but returned the code = ${second.statusCode}"

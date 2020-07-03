@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test
 import requests.getOrderId
 import requests.getRequest
 import requests.postRequest
+import java.net.HttpURLConnection.HTTP_OK
 
 class Pets {
 
@@ -40,7 +41,7 @@ class Pets {
     @Test
     fun `get order by id`() {
         val url = "$PETSTORE_URL/v2/store/order/${getOrderId()}"
-        val response = getRequest(url)
+        val response = getRequest(url, HTTP_OK)
 
         response.json<Order>().assertSoftly {
             id.shouldNotBeNull()

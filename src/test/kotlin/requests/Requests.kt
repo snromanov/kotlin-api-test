@@ -18,13 +18,13 @@ import java.net.HttpURLConnection.HTTP_OK
  * @param url
  * @return response
  */
-fun getRequest(url: String): Response {
+fun getRequest(url: String, status: Int): Response {
     val (_, response) =
         url
             .httpGet()
             .responseString()
             .toAllure()
-            .toLogIfNot(HTTP_OK)
+            .toLogIfNot(status)
 
     return response
 }
