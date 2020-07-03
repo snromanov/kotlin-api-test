@@ -1,5 +1,6 @@
 package helper.logger
 
+import assistants.PETSTORE_URL
 import assistants.POSTMAN_URL
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.should
@@ -11,9 +12,11 @@ class LoggerKtTest {
 
     @Test
     fun loggerException() {
+        val url = listOf(POSTMAN_URL, PETSTORE_URL).shuffled().first()
+        val status = 418
         val exception = shouldThrow<IllegalArgumentException> {
-            getRequest(POSTMAN_URL, 418)
+            getRequest(url, status)
         }
-        exception.message should startWith("The server should have returned code")
+        exception.message should startWith("The server should have returned code = $status")
     }
 }
