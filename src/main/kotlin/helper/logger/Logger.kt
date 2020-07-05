@@ -4,16 +4,16 @@ import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.result.Result
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-val log = LoggerFactory.getLogger("HttpLogger")
+val log: Logger = LoggerFactory.getLogger("HttpLogger")
 
 /**
  * Simplify function add logs for  if request fail
  *
  */
-inline fun <reified T : Any> Triple<Request, Response, Result<T, FuelError>>
-        .toLogIfNot(status: Int) = also {
+inline fun <reified T : Any> Triple<Request, Response, Result<T, FuelError>>.toLogIfNot(status: Int) = also {
     when {
         second.statusCode != status -> {
 
