@@ -1,15 +1,15 @@
 package requests
 
 import assistants.PETSTORE_URL
+import assistants.body
 import assistants.bodyOrder
-import assistants.json
 import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.core.extensions.jsonBody
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
+import com.github.kittinunf.fuel.jackson.responseObject
 import helper.allure.toAllure
 import helper.logger.toLogIfNot
-import model.pets.Order
 import java.net.HttpURLConnection.HTTP_OK
 
 /**
@@ -52,13 +52,13 @@ fun postRequest(url: String, data: String): Response {
  * Get order id
  *
  */
-fun getOrderId() =
-    "$PETSTORE_URL/v2/store/order"
+inline fun <reified T : Any> getOrderId(): T {
+    val url = "$PETSTORE_URL/v2/store/order"
+    return url
         .httpPost()
         .jsonBody(bodyOrder)
-        .responseString()
+        .responseObject<T>()
         .toAllure()
         .toLogIfNot(HTTP_OK)
-        .second
-        .json<Order>()
-        .id
+        .body()
+}

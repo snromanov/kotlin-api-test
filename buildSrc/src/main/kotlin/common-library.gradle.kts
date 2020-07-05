@@ -51,8 +51,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
     testImplementation("org.apache.commons:commons-lang3:$apacheVersion")
     testImplementation("com.natpryce:hamkrest:$hamcrestVersion")
-    testImplementation("io.qameta.allure:allure-attachments:$allureVersion")
-    testImplementation("io.qameta.allure:allure-generator:$allureVersion")
+    implementation("io.qameta.allure:allure-attachments:$allureVersion")
+    implementation("io.qameta.allure:allure-generator:$allureVersion")
     implementation("org.awaitility:awaitility:$awaitVersion")
     implementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
 }

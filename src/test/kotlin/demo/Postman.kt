@@ -1,4 +1,4 @@
-package demotests
+package demo
 
 import assistants.POSTMAN_URL
 import assistants.json
@@ -19,7 +19,7 @@ class Postman {
      */
     @Test
     fun `get request path cookies`() {
-        val url = "url/cookies"
+        val url = "$POSTMAN_URL/cookies"
         val (_, response) =
             url
                 .httpGet()

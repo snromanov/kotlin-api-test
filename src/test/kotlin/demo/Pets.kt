@@ -1,4 +1,4 @@
-package demotests
+package demo
 
 import assistants.PETSTORE_URL
 import assistants.bodyOrder
@@ -40,7 +40,8 @@ class Pets {
      */
     @Test
     fun `get order by id`() {
-        val url = "$PETSTORE_URL/v2/store/order/${getOrderId()}"
+        val orderId = getOrderId<Order>().id
+        val url = "$PETSTORE_URL/v2/store/order/$orderId"
         val response = getRequest(url, HTTP_OK)
 
         response.json<Order>().assertSoftly {
