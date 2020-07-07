@@ -29,7 +29,7 @@ dependencies() {
     // enable extension support for wsdl2java
     wsdl2java("org.jvnet.jaxb2_commons:jaxb2-basics:$jaxb2CommonsVersion")
     wsdl2java("org.jvnet.jaxb2_commons:jaxb2-basics-ant:$jaxb2CommonsVersion")
-    wsdl2java("org.jvnet.jaxb2_commons:jaxb2-basics-annotate:${jaxb2AnnotateVersion}")
+    wsdl2java("org.jvnet.jaxb2_commons:jaxb2-basics-annotate:$jaxb2AnnotateVersion")
     wsdl2java("com.sun.xml.bind:jaxb-impl:$jaxbImplVersion")
     wsdl2java("com.sun.xml.bind:jaxb-core:$jaxbCoreVersion")
     wsdl2java("com.sun.xml.bind:jaxb-xjc:$jaxbCoreVersion")
