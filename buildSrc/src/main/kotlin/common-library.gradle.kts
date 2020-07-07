@@ -55,7 +55,6 @@ dependencies {
     implementation("io.qameta.allure:allure-generator:$allureVersion")
     implementation("org.awaitility:awaitility:$awaitVersion")
     implementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
-    implementation ("org.jvnet.jaxb2_commons:jaxb2-basics-runtime:1.11.1")
 }
 
 tasks {

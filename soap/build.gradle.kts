@@ -1,3 +1,10 @@
+import Build_gradle.Versions.javaxwsVersion
+import Build_gradle.Versions.jaxb2AnnotateVersion
+import Build_gradle.Versions.jaxb2CommonsVersion
+import Build_gradle.Versions.jaxbCoreVersion
+import Build_gradle.Versions.jaxbImplVersion
+import Build_gradle.Versions.jaxbRuntimeVerison
+import Build_gradle.Versions.jsr181Version
 import no.nils.wsdl2java.Wsdl2JavaTask
 
 plugins {
@@ -8,18 +15,28 @@ plugins {
 group = "com.integration.testing"
 version = "0.0.1"
 
+object Versions {
+    const val jaxb2CommonsVersion = "1.11.1"
+    const val jaxb2AnnotateVersion = "1.0.4"
+    const val javaxwsVersion = "2.3.1"
+    const val jaxbRuntimeVerison = "2.3.0.1"
+    const val jsr181Version = "1.0-MR1"
+    const val jaxbImplVersion = "2.3.1"
+    const val jaxbCoreVersion = "2.3.0.1"
+}
 
 dependencies() {
     // enable extension support for wsdl2java
-    wsdl2java("org.jvnet.jaxb2_commons:jaxb2-basics:1.11.1")
-    wsdl2java("org.jvnet.jaxb2_commons:jaxb2-basics-ant:1.11.1")
-    wsdl2java("org.jvnet.jaxb2_commons:jaxb2-basics-annotate:1.0.4")
-    wsdl2java("com.sun.xml.bind:jaxb-impl:2.3.1")
-    wsdl2java("com.sun.xml.bind:jaxb-core:2.3.0.1")
-    wsdl2java("com.sun.xml.bind:jaxb-xjc:2.3.0.1")
-    wsdl2java("org.glassfish.jaxb:jaxb-runtime:2.3.0.1")
-    wsdl2java("javax.xml.ws:jaxws-api:2.3.1")
-    wsdl2java("javax.jws:jsr181-api:1.0-MR1")
+    wsdl2java("org.jvnet.jaxb2_commons:jaxb2-basics:$jaxb2CommonsVersion")
+    wsdl2java("org.jvnet.jaxb2_commons:jaxb2-basics-ant:$jaxb2CommonsVersion")
+    wsdl2java("org.jvnet.jaxb2_commons:jaxb2-basics-annotate:${jaxb2AnnotateVersion}")
+    wsdl2java("com.sun.xml.bind:jaxb-impl:$jaxbImplVersion")
+    wsdl2java("com.sun.xml.bind:jaxb-core:$jaxbCoreVersion")
+    wsdl2java("com.sun.xml.bind:jaxb-xjc:$jaxbCoreVersion")
+    wsdl2java("org.glassfish.jaxb:jaxb-runtime:$jaxbRuntimeVerison")
+    wsdl2java("javax.xml.ws:jaxws-api:$javaxwsVersion")
+    wsdl2java("javax.jws:jsr181-api:$jsr181Version")
+    implementation ("org.jvnet.jaxb2_commons:jaxb2-basics-runtime:$jaxb2CommonsVersion")
 }
 
 tasks {
@@ -29,16 +46,20 @@ tasks {
                 "-xjc-Xequals",
                 "-xjc-XhashCode",
                 "-xjc-XtoString",
-                "$projectDir/src/main/resources/input.wsdl"
+                "$projectDir/src/main/resources/import.wsdl"
             )
         )
     }
 }
-
 val wsdl2java: Wsdl2JavaTask by tasks
-description = "Creates Java classes and resources from WSDL schema."
 sourceSets {
     getByName("main") {
         java.setSrcDirs(java.srcDirs + wsdl2java.generatedWsdlDir)
+    }
+}
+afterEvaluate {
+    tasks.forEach {
+        if (it.name == "kaptKotlin" || it.name == "compileKotlin")
+            it.dependsOn(wsdl2java)
     }
 }
