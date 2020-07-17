@@ -78,12 +78,13 @@ $ ./gradlew detekt
 The library https://github.com/nilsmagnus/wsdl2java is used 
 
 How to start:
-1. Add  wdsl to  soap/src/main/wsdl/
+1. Add  wdsl on a path:  soap/src/main/wsdl/
 2. Fix  wsdl name in soap/build.gradle.kts
 3. Run  gradle task  wsdl2java or
 ```bash
 $ ./gradlew clean wsdl2java
 ```
+Generated classes will be available on a path:  build/generated
  Should be written tests =)
 
 Example:
