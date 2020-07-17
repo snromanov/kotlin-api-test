@@ -12,7 +12,7 @@ class TestKt {
     private val calc = Calculator(URI.create("http://www.dneonline.com/calculator.asmx?wsdl").toURL()).calculatorSoap12
 
     @Test
-    fun `check add`() {
+    fun `Check calculatorSoap12 method add`() {
         calc.add(1, 3).shouldBe(4)
     }
 

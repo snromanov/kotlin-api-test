@@ -74,15 +74,18 @@ $ ./gradlew allureServe
 $ ./gradlew detekt
 ```
 
-### Important
-```bash
-By default local tests are run with the following environment variables that a taken from build.gradle.kts.
-If you need another variables  use gradle configurations with you environment variables.  
-Example:  API_PASSWORD=password;ENV_ID=qa;API_LOGIN=admin;CI=1  where "CI" not null
-```
-See https://www.jetbrains.com/help/idea/creating-and-editing-run-debug-configurations.html
+###Soap module
+The library https://github.com/nilsmagnus/wsdl2java is used 
 
+How to start:
+1. Add  wdsl to  soap/src/main/wsdl/
+2. Fix  wsdl name in soap/build.gradle.kts
+3. Run  gradle task  wsdl2java or
 ```bash
-You may encounter a problem with check Allure report(openning index.html) locally
+$ ./gradlew clean wsdl2java
 ```
-See https://github.com/allure-framework/allure2/issues/968
+ Should be written tests =)
+
+Example:
+1. Used  wsdl  http://www.dneonline.com/calculator.asmx?wsdl
+2. Written a couple of tests soap/src/test/kotlin/calculator/TestKt.kt
